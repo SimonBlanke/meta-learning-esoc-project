@@ -1,4 +1,4 @@
-dataset_dict = {
+dataset_params = {
     "test_dataset_0": {
         "n_samples": 300,
         "n_features": 10,
