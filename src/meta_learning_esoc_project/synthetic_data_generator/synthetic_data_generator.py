@@ -16,3 +16,6 @@ class SyntheticData:
 
     def generate_random(self):
         return make_regression(**random.choice(list(dataset_params.values())))
+
+    def add(self, dataset_params):
+        self.datasets.append(make(dataset_params))
