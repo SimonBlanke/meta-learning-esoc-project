@@ -1,13 +1,16 @@
 import pandas as pd
 import numpy as np
 from sklearn.base import is_classifier, is_regressor
+from sklearn.base import BaseEstimator
+from typing import Tuple
 
 class MetaFeatures:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
-    
-    def dataset_meta_features(dataset_df):
+
+    def dataset_meta_features(dataset_df: pd.DataFrame) -> Tuple[int, int, int, float]:
         """Calculate the number of features, categorical features, and number of numerical features in the dataset"""
+
         numerical_df = dataset_df.select_dtypes(include=['int64', 'float64'])
         num_features = len(dataset_df.columns)
         categorical_features = len(dataset_df.select_dtypes(include=['object']).columns)
@@ -15,7 +18,8 @@ class MetaFeatures:
         mean_correlation = numerical_df.corr().mean().mean()
         return num_features, categorical_features, numerical_features, mean_correlation
     
-    def model_meta_features(model):
+    def model_meta_features(model: BaseEstimator) -> Tuple[int, bool, bool]:
+        
         """Fetch meta features from a model"""
         model_hyperparams = model.get_params()
         num_hyperparams = len(model_hyperparams)
