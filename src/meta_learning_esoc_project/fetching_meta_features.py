@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
-from sklearn.base import is_classifier, is_regressor
-from sklearn.base import BaseEstimator
-from typing import Tuple
+from sklearn.tree import DecisionTreeClassifier
+from typing import Union, Tuple
 
 class MetaFeatures:
     def __init__(self) -> None:
@@ -18,14 +17,17 @@ class MetaFeatures:
         mean_correlation = numerical_df.corr().mean().mean()
         return num_features, categorical_features, numerical_features, mean_correlation
     
-    def model_meta_features(model: BaseEstimator) -> Tuple[int, bool, bool]:
+    def model_meta_features(model: DecisionTreeClassifier) -> Tuple[int, Union[int, float], int]:
         
         """Fetch meta features from a model"""
-        model_hyperparams = model.get_params()
-        num_hyperparams = len(model_hyperparams)
+        max_depth = model.get_params()['max_depth']
+        min_samples_split = model.get_params()['min_samples_split']
+        # min_samples_leaf = model.get_params()['min_samples_leaf']
+        # min_weight_fraction_leaf = model.get_params()['min_weight_fraction_leaf']
+        # max_features = model.get_params()['max_features']
+        max_leaf_nodes = model.get_params()['max_leaf_nodes']
+        # min_impurity_decrease = model.get_params()['min_impurity_decrease']
+        # ccp_alpha = model.get_params()['ccp_alpha']
+        # class_weight = model.get_params()['class_weight']
 
-        # check whether the model is a regressor or classifier or both
-        is_clfr = is_classifier(model)
-        is_regr = is_regressor(model)
-
-        return num_hyperparams, is_clfr, is_regr
+        return (max_depth, min_samples_split, max_leaf_nodes)
